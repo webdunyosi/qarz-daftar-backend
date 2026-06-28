@@ -12,6 +12,19 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+// Database connection check middleware
+app.use((req, res, next) => {
+  // If request is to base route (/), skip db check
+  if (req.path === "/") return next();
+  
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      message: "Ma'lumotlar bazasi bilan ulanish yo'q! Iltimos, MongoDB (lokal bazangiz) ishlayotganini tekshiring."
+    });
+  }
+  next();
+});
+
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/debts", require("./routes/debts"));
@@ -75,10 +88,11 @@ mongoose
   .then(async () => {
     console.log("Successfully connected to MongoDB.");
     await seedData();
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
   })
   .catch((err) => {
     console.error("Failed to connect to MongoDB:", err.message);
   });
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
