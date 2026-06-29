@@ -54,8 +54,8 @@ router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
 });
 
 // @route   PUT /api/users/profile
-// @desc    Update admin's own credentials (Admin only)
-router.put("/profile", authMiddleware, adminMiddleware, async (req, res) => {
+// @desc    Update user's own credentials (username & password)
+router.put("/profile", authMiddleware, async (req, res) => {
   const { username, password } = req.body;
 
   try {
