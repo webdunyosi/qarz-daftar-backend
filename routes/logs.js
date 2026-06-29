@@ -28,7 +28,7 @@ router.get("/", authMiddleware, async (req, res) => {
 // @route   POST /api/logs
 // @desc    Add a new log (Self or Broadcast)
 router.post("/", authMiddleware, async (req, res) => {
-  const { text, type, seller } = req.body;
+  const { text, type, seller, imageUrl, videoUrl } = req.body;
 
   try {
     if (!text || !type) {
@@ -53,6 +53,8 @@ router.post("/", authMiddleware, async (req, res) => {
       time: timeStr,
       type,
       seller: logSeller,
+      imageUrl: imageUrl || null,
+      videoUrl: videoUrl || null,
     });
 
     await newLog.save();

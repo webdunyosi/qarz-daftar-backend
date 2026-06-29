@@ -18,6 +18,14 @@ const LogSchema = new mongoose.Schema(
       type: String, // Username or null for broadcast
       default: null,
     },
+    imageUrl: {
+      type: String,
+      default: null,
+    },
+    videoUrl: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true }
 );
