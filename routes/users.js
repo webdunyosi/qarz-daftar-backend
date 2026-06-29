@@ -19,7 +19,7 @@ router.get("/", authMiddleware, adminMiddleware, async (req, res) => {
 // @route   POST /api/users
 // @desc    Add a new seller (Admin only)
 router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
-  const { username, password, type } = req.body;
+  const { username, password, type, phone } = req.body;
 
   try {
     if (!username || !password) {
@@ -39,6 +39,7 @@ router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
       password: password.trim(),
       role: "seller",
       type: type || "",
+      phone: phone || "",
     });
 
     await newUser.save();
@@ -101,7 +102,7 @@ router.put("/profile", authMiddleware, adminMiddleware, async (req, res) => {
 // @route   PUT /api/users/:identifier
 // @desc    Update user details (Admin only)
 router.put("/:identifier", authMiddleware, adminMiddleware, async (req, res) => {
-  const { username, password, type } = req.body;
+  const { username, password, type, phone } = req.body;
   const { identifier } = req.params;
 
   try {
@@ -141,6 +142,10 @@ router.put("/:identifier", authMiddleware, adminMiddleware, async (req, res) => 
 
     if (type !== undefined) {
       user.type = type;
+    }
+
+    if (phone !== undefined) {
+      user.phone = phone;
     }
 
     await user.save();

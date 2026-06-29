@@ -22,6 +22,10 @@ const UserSchema = new mongoose.Schema(
       type: String, // only for sellers, e.g., "Kiyim-kechak"
       default: "",
     },
+    phone: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );
