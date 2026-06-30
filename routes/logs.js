@@ -83,4 +83,48 @@ router.delete("/", authMiddleware, async (req, res) => {
   }
 });
 
+// @route   DELETE /api/logs/:id
+// @desc    Delete a specific log by ID (Admin only)
+router.delete("/:id", authMiddleware, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Ruxsat etilmadi! Faqat admin o'chira oladi." });
+    }
+    const log = await Log.findById(req.params.id);
+    if (!log) {
+      return res.status(404).json({ message: "Log topilmadi!" });
+    }
+    await Log.deleteOne({ _id: req.params.id });
+    res.json({ message: "Log muvaffaqiyatli o'chirildi!" });
+  } catch (error) {
+    console.error("Delete specific log error:", error);
+    res.status(500).json({ message: "Serverda xatolik yuz berdi!" });
+  }
+});
+
+// @route   PUT /api/logs/:id
+// @desc    Update a specific log by ID (Admin only)
+router.put("/:id", authMiddleware, async (req, res) => {
+  const { text, type, imageUrl, videoUrl } = req.body;
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Ruxsat etilmadi! Faqat admin o'zgartira oladi." });
+    }
+    const log = await Log.findById(req.params.id);
+    if (!log) {
+      return res.status(404).json({ message: "Log topilmadi!" });
+    }
+    log.text = text !== undefined ? text : log.text;
+    log.type = type !== undefined ? type : log.type;
+    log.imageUrl = imageUrl !== undefined ? imageUrl : log.imageUrl;
+    log.videoUrl = videoUrl !== undefined ? videoUrl : log.videoUrl;
+
+    await log.save();
+    res.json(log);
+  } catch (error) {
+    console.error("Update specific log error:", error);
+    res.status(500).json({ message: "Serverda xatolik yuz berdi!" });
+  }
+});
+
 module.exports = router;
