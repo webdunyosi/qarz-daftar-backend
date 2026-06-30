@@ -148,6 +148,18 @@ router.put("/:identifier", authMiddleware, adminMiddleware, async (req, res) => 
       user.phone = phone;
     }
 
+    if (req.body.isBlocked !== undefined) {
+      user.isBlocked = req.body.isBlocked;
+    }
+
+    if (req.body.subscriptionUntil !== undefined) {
+      user.subscriptionUntil = req.body.subscriptionUntil;
+    }
+
+    if (req.body.paymentStatus !== undefined) {
+      user.paymentStatus = req.body.paymentStatus;
+    }
+
     await user.save();
 
     const userResponse = await User.findById(user._id).select("-password");

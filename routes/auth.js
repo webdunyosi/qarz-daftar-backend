@@ -62,6 +62,9 @@ router.get("/me", authMiddleware, async (req, res) => {
       username: req.user.username,
       role: req.user.role,
       type: req.user.type,
+      isBlocked: req.user.isBlocked,
+      subscriptionUntil: req.user.subscriptionUntil,
+      paymentStatus: req.user.paymentStatus,
     });
   } catch (error) {
     console.error("Auth me error:", error);

@@ -26,6 +26,19 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
+    subscriptionUntil: {
+      type: Date,
+      default: null,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["paid", "unpaid"],
+      default: "paid",
+    },
   },
   { timestamps: true }
 );
